@@ -1,162 +1,519 @@
 :root {
-    --primary-color: #007AFF;
-    --background-color: #F5F5F7;
-    --text-color: #1D1D1F;
+    --primary-color: #0066ff;
+    --primary-hover: #0052cc;
+    --background: #f5f7fa;
+    --card-background: #ffffff;
+    --text-primary: #2c3e50;
+    --text-secondary: #666666;
     --border-radius: 12px;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 body {
-    background-color: var(--background-color);
-    color: var(--text-color);
-    line-height: 1.5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: var(--background);
+    color: var(--text-primary);
+    line-height: 1.6;
+    padding: 20px;
 }
 
-.container {
+.app {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem;
 }
 
-h1 {
+.header {
     text-align: center;
-    margin-bottom: 2rem;
-    font-weight: 600;
+    margin-bottom: 40px;
 }
 
-.upload-container {
-    background: white;
+.header h1 {
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.card {
+    background: var(--card-background);
     border-radius: var(--border-radius);
-    padding: 2rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+    overflow: hidden;
+    transition: var(--transition);
+}
+
+.card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.card-content {
+    padding: 24px;
 }
 
 .upload-area {
     border: 2px dashed #ddd;
     border-radius: var(--border-radius);
-    padding: 2rem;
+    padding: 40px 20px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition);
 }
 
 .upload-area:hover {
     border-color: var(--primary-color);
+    background: rgba(0, 102, 255, 0.02);
 }
 
 .upload-icon {
     width: 64px;
     height: 64px;
-    margin-bottom: 1rem;
+    margin: 0 auto 16px;
+    background: url('upload-icon.svg') no-repeat center;
+    background-size: contain;
 }
 
-.upload-btn {
-    background: var(--primary-color);
-    color: white;
+.btn {
+    padding: 12px 24px;
     border: none;
-    padding: 0.8rem 1.5rem;
     border-radius: var(--border-radius);
     font-size: 1rem;
     cursor: pointer;
-    margin-top: 1rem;
-    transition: all 0.3s ease;
+    transition: var(--transition);
 }
 
-.upload-btn:hover {
-    background: #0056b3;
+.btn.primary {
+    background: var(--primary-color);
+    color: white;
 }
 
-.preview-container {
-    margin-top: 2rem;
+.btn.primary:hover {
+    background: var(--primary-hover);
 }
 
-.image-comparison {
+.settings-group {
+    margin-bottom: 20px;
+}
+
+.settings-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+}
+
+.quality-slider {
+    width: 100%;
+    height: 6px;
+    background: #eee;
+    border-radius: 3px;
+    outline: none;
+    -webkit-appearance: none;
+    margin: 15px 0;
+}
+
+.quality-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: white;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    transition: var(--transition);
+}
+
+.quality-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.size-select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+}
+
+.preview-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
-    margin-bottom: 2rem;
+    gap: 24px;
 }
 
-.original-image, .compressed-image {
-    background: white;
-    padding: 1rem;
-    border-radius: var(--border-radius);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+.preview-item {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 }
 
-.original-image img, .compressed-image img {
+.preview-image {
+    position: relative;
     width: 100%;
+    height: 400px;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #eee;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.preview-image::before {
+    content: attr(data-placeholder);
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    position: absolute;
+    z-index: 1;
+}
+
+.preview-image img {
+    position: relative;
+    z-index: 2;
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
     height: auto;
-    border-radius: var(--border-radius);
+    display: none;
+    transition: opacity 0.3s ease;
+    object-fit: contain;
 }
 
-.compression-controls {
-    background: white;
-    padding: 2rem;
-    border-radius: var(--border-radius);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+.preview-image img.active {
+    display: block;
 }
 
-input[type="range"] {
-    width: 100%;
-    margin: 1rem 0;
+.preview-card {
+    display: none;
 }
 
-.download-btn {
-    background: var(--primary-color);
+.preview-card.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.image-info {
+    color: var(--text-secondary);
+    margin: 8px 0;
+}
+
+.loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.9);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-bottom: 12px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.toast {
+    position: fixed;
+    top: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.8);
     color: white;
-    border: none;
-    padding: 0.8rem 1.5rem;
+    padding: 12px 24px;
     border-radius: var(--border-radius);
-    font-size: 1rem;
-    cursor: pointer;
-    width: 100%;
-    margin-top: 1rem;
-    transition: all 0.3s ease;
-}
-
-.download-btn:hover {
-    background: #0056b3;
-}
-
-.compression-settings {
-    margin-top: 2rem;
-    background: white;
-    border-radius: var(--border-radius);
-    padding: 2rem;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-}
-
-.settings-container {
+    display: none;
+    z-index: 1001;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    animation: slideDown 0.3s ease;
+    font-weight: 500;
+    min-width: 200px;
     text-align: center;
 }
 
-.quality-control {
-    margin: 1.5rem 0;
+@keyframes slideDown {
+    from {
+        transform: translate(-50%, -100%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
 }
 
-.compress-btn {
-    background: var(--primary-color);
-    color: white;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: var(--border-radius);
-    font-size: 1rem;
-    cursor: pointer;
+.toast:hover {
+    background: rgba(0, 0, 0, 0.9);
+}
+
+@media (max-width: 768px) {
+    .preview-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-content {
+        padding: 16px;
+    }
+    
+    .header h1 {
+        font-size: 2rem;
+    }
+}
+
+/* 上传区域基础样式 */
+.upload-card {
     transition: all 0.3s ease;
 }
 
-.compress-btn:hover {
-    background: #0056b3;
+.upload-card.collapsed {
+    margin-bottom: 16px;
+    background: var(--background);
 }
 
-.compress-btn:disabled {
-    background: #999;
-    cursor: not-allowed;
+.upload-card.collapsed .card-content {
+    padding: 8px;
+}
+
+/* 完整上传区域 */
+.upload-area.full {
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    border: 2px dashed #ddd;
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.upload-area.full:hover {
+    border-color: var(--primary-color);
+    background: rgba(0, 102, 255, 0.02);
+}
+
+/* 上传图标样式优化 */
+.upload-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0;
+    background: url('upload-icon.svg') no-repeat center;
+    background-size: contain;
+}
+
+/* 上传区域文字样式 */
+.upload-area.full p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+/* 上传按钮样式优化 */
+.upload-area.full .btn {
+    margin: 0;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+}
+
+/* 折叠后的简化上传区域 */
+.upload-area.compact {
+    display: none;
+    height: 48px;
+    padding: 8px 16px;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    background: var(--background);
+    border: none;
+}
+
+.upload-card.collapsed .upload-area.compact {
+    display: flex;
+}
+
+/* 更换图片按钮样式 */
+.btn.secondary {
+    background: white;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    padding: 8px 16px;
+    font-size: 0.9rem;
+}
+
+.btn.secondary:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+/* 修改折叠后的控制区域样式 */
+.control-area.compact {
+    display: none;
+    padding: 12px 16px;
+    background: var(--background);
+    border: none;
+    border-radius: var(--border-radius);
+}
+
+.upload-card.collapsed .control-area.compact {
+    display: block;
+}
+
+/* 控制组样式 */
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    justify-content: center;
+}
+
+/* 质量控制样式优化 */
+.quality-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 200px;
+    padding: 0 8px;
+}
+
+.quality-slider {
+    flex: 1;
+    height: 6px;
+    background: #eee;
+    border-radius: 3px;
+    outline: none;
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.quality-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: white;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    transition: var(--transition);
+}
+
+.quality-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.quality-value {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    min-width: 48px;
+    text-align: right;
+}
+
+/* 按钮样式优化 */
+.control-group .btn {
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+    .control-group {
+        flex-direction: column;
+        gap: 12px;
+    }
+    
+    .quality-control {
+        width: 100%;
+    }
+}
+
+/* 上传卡片折叠状态样式 */
+.upload-card .upload-area.full {
+    height: 200px;
+    transition: var(--transition);
+}
+
+.upload-card.collapsed .upload-area.full {
+    display: none;
+}
+
+.upload-card .control-area {
+    display: none;
+    transition: var(--transition);
+}
+
+.upload-card.collapsed .control-area {
+    display: block;
+}
+
+/* 优化折叠动画 */
+.upload-card {
+    transition: all 0.3s ease;
+}
+
+.upload-card.collapsed {
+    max-height: 80px; /* 控制折叠后的高度 */
+    overflow: hidden;
+}
+
+/* 下载按钮包装器和按钮样式 */
+.download-btn-wrapper {
+    margin-top: 16px;
+    height: 0;
+    overflow: hidden;
+    transition: height 0.3s ease;
+}
+
+.download-btn-wrapper.active {
+    height: 44px;
+    padding: 2px 0;
+}
+
+.download-btn {
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s ease;
+    width: 100%;
+    height: 40px;
+}
+
+.download-btn.active {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
 } 
